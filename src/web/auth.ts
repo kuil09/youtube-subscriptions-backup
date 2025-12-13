@@ -7,6 +7,21 @@ type TokenRecord = {
 let cached: TokenRecord | null = null;
 let loadingGis: Promise<void> | null = null;
 
+type InitTokenClient = (cfg: {
+  client_id: string;
+  scope: string;
+  callback: (resp: {
+    access_token?: string;
+    expires_in?: number;
+    scope?: string;
+    token_type?: string;
+    error?: string;
+    error_description?: string;
+  }) => void;
+}) => {
+  requestAccessToken: (opts?: { prompt?: '' | 'none' | 'consent' }) => void;
+};
+
 export function getConfiguredClientId(): string {
   // NOTE: This is a client-side app (Vite). The value is injected at build-time.
   // Even if sourced from GitHub Secrets, the built artifact can still be inspected.
@@ -16,7 +31,10 @@ export function getConfiguredClientId(): string {
 }
 
 function getInitTokenClient() {
-  return google?.accounts?.oauth2?.initTokenClient;
+  // IMPORTANT: Do not reference `google` directly. If the GIS script hasn't loaded yet,
+  // the identifier doesn't exist and would throw a ReferenceError.
+  const g = (globalThis as any).google as any;
+  return g?.accounts?.oauth2?.initTokenClient as InitTokenClient | undefined;
 }
 
 export async function ensureGisLoaded(): Promise<void> {
