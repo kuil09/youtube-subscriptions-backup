@@ -23,8 +23,14 @@ function el<T extends HTMLElement>(id: string): T {
 }
 
 function log(msg: string) {
-  const target = el<HTMLDivElement>('log');
+  // Logs are developer-facing; UI may not include #log in production.
+  const target = document.getElementById('log') as HTMLDivElement | null;
   const now = new Date().toISOString();
+  if (!target) {
+    // Keep some diagnostics in DevTools without crashing the app.
+    console.debug(`[${now}] ${msg}`);
+    return;
+  }
   target.textContent = `[${now}] ${msg}\n` + target.textContent;
 }
 
@@ -344,6 +350,8 @@ function initLanguage() {
 
 function init() {
   initLanguage();
+  const originEl = document.getElementById('siteOrigin');
+  if (originEl) originEl.textContent = window.location.origin;
 
   el<HTMLButtonElement>('authReadonly').addEventListener('click', async () => {
     setBusy(true);

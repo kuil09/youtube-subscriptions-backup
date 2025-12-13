@@ -54,17 +54,23 @@
 
       <div class="grid">
         <section class="card" aria-label="OAuth settings">
-          <h2 data-i18n="sec1_title">1) Google OAuth Client ID</h2>
+          <h2 data-i18n="sec1_title">1) Google OAuth</h2>
           <p class="muted">
-            <span data-i18n="sec1_desc" data-i18n-params='{"strong":"i18n:sec1_strong"}'></span>
+            <span data-i18n="sec1_desc"></span>
           </p>
           <div class="row" style="margin-top:10px;">
             <button id="authReadonly" data-i18n="btn_auth_readonly">Authorize (readonly)</button>
             <button id="authManage" data-i18n="btn_auth_manage">Authorize (manage)</button>
           </div>
-          <p class="muted">
-            <span data-i18n="sec1_hint" data-i18n-params='{"ro":"youtube.readonly","mg":"youtube"}'></span>
-          </p>
+          <details class="muted" style="margin-top:10px;">
+            <summary data-i18n="sec1_help_summary">로그인이 안 되나요?</summary>
+            <p style="margin-top:10px;" data-i18n="sec1_help_desc"></p>
+            <div class="status" style="margin-top:10px;">
+              <div><b data-i18n="sec1_help_origin_label">현재 사이트 출처</b></div>
+              <code id="siteOrigin"></code>
+            </div>
+            <p style="margin-top:10px;" data-i18n="sec1_help_note"></p>
+          </details>
         </section>
 
         <section class="card" aria-label="status">
@@ -73,7 +79,6 @@
             <button id="refreshCount" data-i18n="btn_refresh_count">Refresh count</button>
             <span class="pill"><span data-i18n="subs_label">Subscriptions</span>: <b id="subsCount">-</b></span>
           </div>
-          <p class="muted"><span data-i18n="sec2_desc" data-i18n-params='{"code":"subscriptions.list(mine=true)"}'></span></p>
         </section>
       </div>
 
@@ -107,11 +112,6 @@
           <button id="applyImport" disabled data-i18n="btn_apply_import">Apply import (subscribe)</button>
         </div>
         <div id="importPreview" class="status" style="margin-top:10px;" data-i18n="import_no_file">No file loaded.</div>
-      </section>
-
-      <section style="margin-top: 12px;">
-        <h2 data-i18n="logs_title">Logs</h2>
-        <div id="log" class="status" data-i18n="logs_ready">Ready.</div>
       </section>
     </main>
 
