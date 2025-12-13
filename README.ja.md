@@ -1,0 +1,78 @@
+# YouTube Subscriptions Manager（静的Web）
+
+YouTube のチャンネル登録リストを **エクスポート(Export)** して整理し、編集したファイルを **インポート(Import)** してブラウザから登録を追加/復元できる **静的Webアプリ**です。
+
+読む言語: [English](README.md) | [한국어](README.ko.md) | **日本語**
+
+## 主な機能
+- 登録チャンネル数（件数）を表示
+- 登録リストを **Export**（JSON/CSV）でダウンロード
+- **Cleanup**：先に Export し、typed confirm（入力確認）後に全て登録解除
+- 編集した Export ファイルを **Import** し、現在未登録のチャンネルのみを登録
+
+UI は **한국어/English/日本語** に対応し、ブラウザ言語を既定として自動選択します（上部セレクタで変更可能）。
+
+## 技術
+- Vite + TypeScript
+- Google OAuth: **Google Identity Services (GIS) Token Client**
+- YouTube Data API v3
+
+## ローカル開発
+
+```bash
+npm install
+npm run dev
+```
+
+Vite が表示するURLを開いてください。
+
+ビルド:
+
+```bash
+npm run build
+```
+
+本番ビルドのプレビュー:
+
+```bash
+npm run preview
+```
+
+## Google Cloud 設定（必須）
+
+自分の Google Cloud プロジェクトと OAuth Client ID が必要です。
+
+1) **API を有効化**
+- Google Cloud Console で **YouTube Data API v3** を有効化します。
+
+2) **OAuth Client ID を作成**
+- OAuth クライアント種別は **Web application** で作成します。
+- **Authorized JavaScript origins** にローカル/本番のオリジンを追加します。
+  - 例: `http://localhost:5173`, デプロイ先ドメイン
+
+3) **アプリに Client ID を設定**
+- アプリの “Google OAuth Client ID” に Client ID を貼り付けます。
+
+## OAuth スコープ
+- 読み取り（参照）の操作:
+  - `https://www.googleapis.com/auth/youtube.readonly`
+- 登録変更（登録解除/登録追加）の操作:
+  - `https://www.googleapis.com/auth/youtube`
+
+## Import フォーマット
+
+### JSON（推奨）
+JSON の Export には各項目の `channelId` が含まれます。Import は `channelId`（または `/channel/<id>` を含むURL）を想定します。
+
+### CSV
+CSV は最低でも `channelId` 列が必要です。
+
+## 注意 / 安全
+- **登録解除/登録追加は実アカウントに即時反映されます。** 必ず先に Export でバックアップしてください。
+- 登録数が多い場合は quota/rate limit の影響を受けることがあります。アプリは backoff/pacing を行いますが失敗する可能性があり、失敗レポート(JSON)をダウンロードします。
+
+## プロジェクト構成
+- `index.html` — メインページ
+- `src/web/` — Webアプリ（OAuth, i18n, UIロジック）
+- `src/shared/` — 共通ユーティリティ/型
+

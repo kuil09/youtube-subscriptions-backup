@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="app_title">YouTube Subscriptions Manager</title>
+    <meta
+      name="description"
+      content="내 YouTube 구독 채널 수를 확인하고, Export/Import로 구독 목록을 백업·정리·재적용하는 정적 웹 서비스."
+    />
+    <style>
+      :root { color-scheme: light dark; }
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; }
+      main { max-width: 880px; margin: 0 auto; padding: 24px 16px 72px; }
+      .topbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+      h1 { margin: 0 0 10px; font-size: 26px; }
+      h2 { margin: 28px 0 10px; font-size: 18px; }
+      p { line-height: 1.55; margin: 10px 0; }
+      .muted { opacity: 0.75; }
+      .card { border: 1px solid color-mix(in srgb, currentColor 18%, transparent); border-radius: 12px; padding: 14px; }
+      .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      .row > * { flex: 0 0 auto; }
+      input[type="text"] { width: min(720px, 100%); padding: 10px 12px; border-radius: 10px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+      select { padding: 8px 10px; border-radius: 10px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); background: transparent; }
+      button { padding: 10px 12px; border-radius: 10px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); background: color-mix(in srgb, currentColor 6%, transparent); cursor: pointer; }
+      button:disabled { opacity: 0.6; cursor: not-allowed; }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95em; }
+      .status { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; padding: 10px; border-radius: 10px; background: color-mix(in srgb, currentColor 6%, transparent); border: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
+      .danger { border-color: color-mix(in srgb, #e11d48 45%, transparent); }
+      .danger button { border-color: color-mix(in srgb, #e11d48 45%, transparent); }
+      .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); font-size: 12px; }
+      .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      @media (min-width: 860px) { .grid { grid-template-columns: 1fr 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="topbar">
+        <h1 data-i18n="app_title">YouTube Subscriptions Manager</h1>
+        <div class="row" style="gap: 8px;">
+          <label for="lang" class="muted" data-i18n="lang_label">언어</label>
+          <select id="lang" aria-label="language select">
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="muted" data-i18n="app_intro_1" data-i18n-params='{"pill":"i18n:app_tag_pill"}'></p>
+      <p class="muted">
+        <span data-i18n="app_intro_2" data-i18n-params='{"strong":"i18n:app_intro_strong"}'></span>
+      </p>
+
+      <div class="grid">
+        <section class="card" aria-label="OAuth settings">
+          <h2 data-i18n="sec1_title">1) Google OAuth Client ID</h2>
+          <p class="muted">
+            <span data-i18n="sec1_desc" data-i18n-params='{"strong":"i18n:sec1_strong"}'></span>
+          </p>
+          <div class="row">
+            <input id="clientId" type="text" data-i18n="client_id_placeholder" data-i18n-attr="placeholder" placeholder="xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com" />
+            <button id="saveClientId" data-i18n="btn_save">Save</button>
+          </div>
+          <div class="row" style="margin-top:10px;">
+            <button id="authReadonly" data-i18n="btn_auth_readonly">Authorize (readonly)</button>
+            <button id="authManage" data-i18n="btn_auth_manage">Authorize (manage)</button>
+          </div>
+          <p class="muted">
+            <span data-i18n="sec1_hint" data-i18n-params='{"ro":"youtube.readonly","mg":"youtube"}'></span>
+          </p>
+        </section>
+
+        <section class="card" aria-label="status">
+          <h2 data-i18n="sec2_title">2) 내 구독 현황</h2>
+          <div class="row">
+            <button id="refreshCount" data-i18n="btn_refresh_count">Refresh count</button>
+            <span class="pill"><span data-i18n="subs_label">Subscriptions</span>: <b id="subsCount">-</b></span>
+          </div>
+          <p class="muted"><span data-i18n="sec2_desc" data-i18n-params='{"code":"subscriptions.list(mine=true)"}'></span></p>
+        </section>
+      </div>
+
+      <section class="card" aria-label="export" style="margin-top: 12px;">
+        <h2 data-i18n="sec3_title">3) Export (다운로드)</h2>
+        <p class="muted" data-i18n="sec3_desc">현재 구독 목록을 JSON/CSV 파일로 내려받습니다.</p>
+        <div class="row">
+          <button id="exportJson" data-i18n="btn_export_json">Export JSON</button>
+          <button id="exportCsv" data-i18n="btn_export_csv">Export CSV</button>
+        </div>
+      </section>
+
+      <section class="card danger" aria-label="cleanup" style="margin-top: 12px;">
+        <h2 data-i18n="sec4_title">4) Cleanup (전체 구독 취소)</h2>
+        <p class="muted" data-i18n="sec4_desc">
+          Export를 먼저 수행한 뒤, typed confirm으로 한 번 더 확인하고 전체 구독을 취소합니다.
+        </p>
+        <div class="row">
+          <button id="cleanupJson" data-i18n="btn_cleanup_json">Cleanup after Export (JSON)</button>
+          <button id="cleanupCsv" data-i18n="btn_cleanup_csv">Cleanup after Export (CSV)</button>
+        </div>
+      </section>
+
+      <section class="card" aria-label="import" style="margin-top: 12px;">
+        <h2 data-i18n="sec5_title">5) Import (파일을 적용해서 구독 추가)</h2>
+        <p class="muted" data-i18n="sec5_desc">
+          Export한 파일(JSON/CSV)을 수정해서 업로드하면, 현재 구독 목록과 비교 후 부족한 채널을 구독 추가합니다.
+        </p>
+        <div class="row">
+          <input id="importFile" type="file" accept=".json,.csv,application/json,text/csv" />
+          <button id="applyImport" disabled data-i18n="btn_apply_import">Apply import (subscribe)</button>
+        </div>
+        <div id="importPreview" class="status" style="margin-top:10px;" data-i18n="import_no_file">No file loaded.</div>
+      </section>
+
+      <section style="margin-top: 12px;">
+        <h2 data-i18n="logs_title">Logs</h2>
+        <div id="log" class="status" data-i18n="logs_ready">Ready.</div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/web/main.ts"></script>
+  </body>
+</html>
+
