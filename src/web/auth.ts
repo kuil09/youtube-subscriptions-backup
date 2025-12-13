@@ -26,8 +26,32 @@ export async function ensureGisLoaded(): Promise<void> {
   loadingGis = new Promise<void>((resolve, reject) => {
     const existing = document.querySelector<HTMLScriptElement>('script[data-gis="true"]');
     if (existing) {
-      existing.addEventListener('load', () => resolve(), { once: true });
-      existing.addEventListener('error', () => reject(new Error('Failed to load Google Identity Services script.')), { once: true });
+      // If the script already loaded before we attached listeners, the `load`
+      // event may never fire again. Use a short poll as a fallback.
+      if (typeof google !== 'undefined' && google.accounts?.oauth2?.initTokenClient) {
+        resolve();
+        return;
+      }
+
+      const fail = () => reject(new Error('Failed to load Google Identity Services script.'));
+      existing.addEventListener('load', () => {
+        existing.dataset.gisLoaded = 'true';
+        resolve();
+      }, { once: true });
+      existing.addEventListener('error', fail, { once: true });
+
+      const start = Date.now();
+      const timer = setInterval(() => {
+        if (typeof google !== 'undefined' && google.accounts?.oauth2?.initTokenClient) {
+          clearInterval(timer);
+          resolve();
+          return;
+        }
+        if (Date.now() - start > 5000) {
+          clearInterval(timer);
+          fail();
+        }
+      }, 50);
       return;
     }
 
@@ -36,7 +60,10 @@ export async function ensureGisLoaded(): Promise<void> {
     s.async = true;
     s.defer = true;
     s.dataset.gis = 'true';
-    s.onload = () => resolve();
+    s.onload = () => {
+      s.dataset.gisLoaded = 'true';
+      resolve();
+    };
     s.onerror = () => reject(new Error('Failed to load Google Identity Services script.'));
     document.head.appendChild(s);
   });

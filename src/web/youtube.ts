@@ -16,8 +16,16 @@ async function ytFetch(token: string, url: string, init?: RequestInit): Promise<
 
   if (!resp.ok) {
     const text = await resp.text();
+    // Try to provide actionable guidance for common GCP setup errors.
+    // IMPORTANT: only catch JSON parse errors, do NOT swallow our own thrown errors.
+    let data: any = undefined;
     try {
-      const data = JSON.parse(text);
+      data = JSON.parse(text);
+    } catch {
+      data = undefined;
+    }
+
+    if (data) {
       const reason = data?.error?.details?.[0]?.metadata?.reason ?? data?.error?.details?.[0]?.reason;
       const activationUrl = data?.error?.details?.[0]?.metadata?.activationUrl;
       const service = data?.error?.details?.[0]?.metadata?.service;
@@ -31,8 +39,6 @@ async function ytFetch(token: string, url: string, init?: RequestInit): Promise<
           ].filter(Boolean).join('\n')
         );
       }
-    } catch {
-      // ignore JSON parse errors; fall back to raw text
     }
     throw new Error(`YouTube API error ${resp.status}: ${text}`);
   }

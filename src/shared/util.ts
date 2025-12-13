@@ -46,7 +46,8 @@ export function downloadTextFile(
   a.style.display = 'none';
   document.body.appendChild(a);
   a.click();
-  a.remove();
+  // Give the browser a chance to start the download before removing the element.
+  setTimeout(() => a.remove(), 0);
 
   // There is no reliable “download completed” event for <a download>.
   // Revoking too early can break large downloads, so use a conservative delay.

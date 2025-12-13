@@ -259,7 +259,6 @@ function renderImportPreview(model: ImportModel | null) {
 async function onImportFileSelected(file: File | null) {
   currentImport = null;
   renderImportPreview(null);
-  setBusy(false);
   if (!file) return;
 
   const text = await file.text();
@@ -267,7 +266,6 @@ async function onImportFileSelected(file: File | null) {
   const model = isJson ? parseImportJson(text) : parseImportCsv(text);
   currentImport = model;
   renderImportPreview(model);
-  setBusy(false);
   logT('log_loaded_import', { name: file.name, channels: model.channelIds.length, errors: model.errors.length });
 }
 
@@ -383,10 +381,18 @@ function init() {
   el<HTMLButtonElement>('cleanupCsv').addEventListener('click', () => cleanupSubscriptions('csv'));
 
   el<HTMLInputElement>('importFile').addEventListener('change', async (ev) => {
-    const input = ev.target as HTMLInputElement;
-    const file = input.files?.[0] ?? null;
-    await onImportFileSelected(file);
-    setBusy(false);
+    setBusy(true);
+    try {
+      const input = ev.target as HTMLInputElement;
+      const file = input.files?.[0] ?? null;
+      await onImportFileSelected(file);
+    } catch (e: any) {
+      const msg = String(e?.message ?? e);
+      log(`Import file error: ${msg}`);
+      alert(`Failed to read import file.\n\n${msg}`);
+    } finally {
+      setBusy(false);
+    }
   });
 
   el<HTMLButtonElement>('applyImport').addEventListener('click', applyImport);
