@@ -77,13 +77,18 @@ async function getManageToken(interactive = true) {
   return authorize(SCOPES_MANAGE, interactive ? 'consent' : '');
 }
 
+async function updateSubsCountFromToken(token: string) {
+  const subs = await listAllSubscriptions(token);
+  el<HTMLElement>('subsCount').textContent = String(subs.length);
+  logT('log_fetched_subs', { count: subs.length });
+  return subs.length;
+}
+
 async function refreshCount() {
   setBusy(true);
   try {
     const token = await getReadonlyToken(true);
-    const subs = await listAllSubscriptions(token);
-    el<HTMLElement>('subsCount').textContent = String(subs.length);
-    logT('log_fetched_subs', { count: subs.length });
+    await updateSubsCountFromToken(token);
   } finally {
     setBusy(false);
   }
@@ -153,7 +158,7 @@ async function cleanupSubscriptions(format: 'json' | 'csv') {
       return;
     }
     const typed = prompt(t('prompt_cleanup_typed', { count: subs.length }));
-    if (typed !== `UNSUBSCRIBE ${subs.length}`) {
+    if ((typed ?? '').trim() !== String(subs.length)) {
       logT('confirm_cleanup_cancel_2');
       return;
     }
@@ -350,13 +355,12 @@ function initLanguage() {
 
 function init() {
   initLanguage();
-  const originEl = document.getElementById('siteOrigin');
-  if (originEl) originEl.textContent = window.location.origin;
 
   el<HTMLButtonElement>('authReadonly').addEventListener('click', async () => {
     setBusy(true);
     try {
-      await authorize(SCOPES_READONLY, 'consent');
+      const token = await authorize(SCOPES_READONLY, 'consent');
+      await updateSubsCountFromToken(token);
       alert(t('alert_auth_ok_ro'));
     } finally {
       setBusy(false);
@@ -366,7 +370,8 @@ function init() {
   el<HTMLButtonElement>('authManage').addEventListener('click', async () => {
     setBusy(true);
     try {
-      await authorize(SCOPES_MANAGE, 'consent');
+      const token = await authorize(SCOPES_MANAGE, 'consent');
+      await updateSubsCountFromToken(token);
       alert(t('alert_auth_ok_manage'));
     } finally {
       setBusy(false);

@@ -77,8 +77,8 @@ async function cleanupSubscriptions(format: 'csv' | 'json') {
     `Exported subscriptions (${count}).\n\nPreview (first ${Math.min(8, count)}): ${preview || '(n/a)'}\n\nNow unsubscribe ALL of them?`
   );
   if (!ok1) return;
-  const typed = prompt(`Type "UNSUBSCRIBE ${count}" to confirm.`);
-  if (typed !== `UNSUBSCRIBE ${count}`) { alert('Cancelled'); return; }
+  const typed = prompt(`Type the number of channels to unsubscribe: "${count}"`);
+  if ((typed ?? '').trim() !== String(count)) { alert('Cancelled'); return; }
 
   // Step 4: bulk unsubscribe (write scope)
   const res = await chrome.runtime.sendMessage({ type: 'SUBS_BULK_UNSUB', subscriptionIds: ids });

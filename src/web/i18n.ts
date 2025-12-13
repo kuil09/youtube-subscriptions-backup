@@ -38,18 +38,6 @@ export const I18N: Dict = {
   },
   btn_auth_readonly: { ko: '로그인 (조회/다운로드)', en: 'Sign in (view/export)', ja: 'ログイン (閲覧/エクスポート)' },
   btn_auth_manage: { ko: '로그인 (구독 변경)', en: 'Sign in (change subscriptions)', ja: 'ログイン (登録を変更)' },
-  sec1_help_summary: { ko: '로그인이 안 되나요?', en: 'Having trouble signing in?', ja: 'ログインできませんか？' },
-  sec1_help_desc: {
-    ko: '이 페이지가 “승인된 출처”로 등록되어 있지 않으면 로그인이 차단될 수 있습니다. (특히 직접 배포한 경우) Google Cloud Console → OAuth 클라이언트 설정에서 **Authorized JavaScript origins**에 아래 값을 추가하세요.',
-    en: 'If this site is not registered as an authorized origin, Google may block sign-in (especially for self-hosted deployments). In Google Cloud Console → OAuth client settings, add the value below to **Authorized JavaScript origins**.',
-    ja: 'このサイトが「承認済みの出所」として登録されていない場合、ログインがブロックされることがあります（特に自分でデプロイした場合）。Google Cloud Console の OAuth クライアント設定で **Authorized JavaScript origins** に下の値を追加してください。',
-  },
-  sec1_help_origin_label: { ko: '현재 사이트 출처(Origin)', en: 'This site origin', ja: 'このサイトの Origin' },
-  sec1_help_note: {
-    ko: '참고: Origin은 `https://도메인` 형태이며, `/경로`는 포함하지 않습니다.',
-    en: 'Note: An origin looks like `https://domain` (no `/path`).',
-    ja: '注: Origin は `https://ドメイン` の形式で、`/パス` は含みません。',
-  },
 
   sec2_title: { ko: '2) 구독 수 확인', en: '2) Check your subscription count', ja: '2) 登録数を確認' },
   btn_refresh_count: { ko: '구독 수 확인', en: 'Check count', ja: '件数を確認' },
@@ -106,11 +94,11 @@ export const I18N: Dict = {
   },
   confirm_cleanup_cancel_1: { ko: '전체 취소를 중단했습니다.', en: 'Cancelled.', ja: 'キャンセルしました。' },
   prompt_cleanup_typed: {
-    ko: '확인을 위해 다음 문구를 그대로 입력하세요:\n\nUNSUBSCRIBE {count}',
-    en: 'To confirm, type the following exactly:\n\nUNSUBSCRIBE {count}',
-    ja: '確認のため、次の文をそのまま入力してください:\n\nUNSUBSCRIBE {count}',
+    ko: '확인을 위해 “구독 취소 예정 채널 수”를 그대로 입력하세요:\n\n{count}',
+    en: 'To confirm, type the “number of channels to unsubscribe” exactly:\n\n{count}',
+    ja: '確認のため「解除予定のチャンネル数」をそのまま入力してください:\n\n{count}',
   },
-  confirm_cleanup_cancel_2: { ko: '문구가 일치하지 않아 중단했습니다.', en: 'Cancelled (phrase mismatch).', ja: '文が一致しないため中断しました。' },
+  confirm_cleanup_cancel_2: { ko: '숫자가 일치하지 않아 중단했습니다.', en: 'Cancelled (number mismatch).', ja: '数字が一致しないため中断しました。' },
   log_cleanup_done: { ko: '전체 취소 완료. 시도={attempted}, 실패={failed}', en: 'Unsubscribe completed. attempted={attempted}, failed={failed}', ja: '解除完了. attempted={attempted}, failed={failed}' },
   alert_unsub_done_no_fail: {
     ko: '전체 구독을 취소했습니다. (총 {attempted})',

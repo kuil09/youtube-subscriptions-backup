@@ -33,6 +33,9 @@
       .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); font-size: 12px; }
       .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
       @media (min-width: 860px) { .grid { grid-template-columns: 1fr 1fr; } }
+      .statCard { display: grid; gap: 10px; }
+      .statValue { font-size: 42px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
+      .statLabelRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
     </style>
   </head>
   <body>
@@ -67,22 +70,16 @@
             <button id="authReadonly" data-i18n="btn_auth_readonly">Authorize (readonly)</button>
             <button id="authManage" data-i18n="btn_auth_manage">Authorize (manage)</button>
           </div>
-          <details class="muted" style="margin-top:10px;">
-            <summary data-i18n="sec1_help_summary">로그인이 안 되나요?</summary>
-            <p style="margin-top:10px;" data-i18n="sec1_help_desc"></p>
-            <div class="status" style="margin-top:10px;">
-              <div><b data-i18n="sec1_help_origin_label">현재 사이트 출처</b></div>
-              <code id="siteOrigin"></code>
-            </div>
-            <p style="margin-top:10px;" data-i18n="sec1_help_note"></p>
-          </details>
         </section>
 
         <section class="card" aria-label="status">
           <h2 data-i18n="sec2_title">2) 내 구독 현황</h2>
-          <div class="row">
-            <button id="refreshCount" data-i18n="btn_refresh_count">Refresh count</button>
-            <span class="pill"><span data-i18n="subs_label">Subscriptions</span>: <b id="subsCount">-</b></span>
+          <div class="statCard">
+            <div class="statValue" id="subsCount">-</div>
+            <div class="statLabelRow">
+              <span class="pill"><span data-i18n="subs_label">Subscriptions</span></span>
+              <button id="refreshCount" data-i18n="btn_refresh_count">Refresh count</button>
+            </div>
           </div>
         </section>
       </div>
