@@ -13,6 +13,8 @@
       body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; }
       main { max-width: 880px; margin: 0 auto; padding: 24px 16px 72px; }
       .topbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+      .brand { display: flex; align-items: center; gap: 10px; }
+      .logo { width: 36px; height: 36px; border-radius: 10px; }
       h1 { margin: 0 0 10px; font-size: 26px; }
       h2 { margin: 28px 0 10px; font-size: 18px; }
       p { line-height: 1.55; margin: 10px 0; }
@@ -36,7 +38,10 @@
   <body>
     <main>
       <div class="topbar">
-        <h1 data-i18n="app_title">YouTube Subscriptions Manager</h1>
+        <div class="brand">
+          <img class="logo" src="./logo-120.svg" width="36" height="36" data-i18n="app_logo_alt" data-i18n-attr="alt" alt="App logo" />
+          <h1 data-i18n="app_title">YouTube Subscriptions Manager</h1>
+        </div>
         <div class="row" style="gap: 8px;">
           <label for="lang" class="muted" data-i18n="lang_label">언어</label>
           <select id="lang" aria-label="language select">
@@ -112,6 +117,19 @@
           <button id="applyImport" disabled data-i18n="btn_apply_import">Apply import (subscribe)</button>
         </div>
         <div id="importPreview" class="status" style="margin-top:10px;" data-i18n="import_no_file">No file loaded.</div>
+      </section>
+
+      <section class="card" aria-label="support" style="margin-top: 12px;">
+        <h2 data-i18n="support_title">Support</h2>
+        <p class="muted">
+          <span data-i18n="support_desc">If this app helped you, consider supporting the project:</span>
+          <a href="https://buymeacoffee.com/e3pbwto" target="_blank" rel="noreferrer">buymeacoffee.com/e3pbwto</a>
+        </p>
+        <p class="muted">
+          <a href="./privacy.html" data-i18n="legal_privacy">Privacy Policy</a>
+          ·
+          <a href="./terms.html" data-i18n="legal_terms">Terms of Service</a>
+        </p>
       </section>
     </main>
 

@@ -1,5 +1,9 @@
 # YouTube Subscriptions Manager（静的Web）
 
+<p>
+  <img src="public/logo-120.svg" width="120" height="120" alt="YouTube Subscriptions Manager ロゴ" />
+</p>
+
 YouTube のチャンネル登録リストを **エクスポート(Export)** して整理し、編集したファイルを **インポート(Import)** してブラウザから登録を追加/復元できる **静的Webアプリ**です。
 
 読む言語: [English](README.md) | [한국어](README.ko.md) | **日本語**
@@ -16,6 +20,14 @@ UI は **한국어/English/日本語** に対応し、ブラウザ言語を既�
 - Vite + TypeScript
 - Google OAuth: **Google Identity Services (GIS) Token Client**
 - YouTube Data API v3
+
+## 法的ページ（Google OAuth 審査で必須）
+- プライバシーポリシー: `privacy.html`
+- 利用規約: `terms.html`
+
+デプロイ後（例: GitHub Pages のプロジェクトページ）通常は次の形式になります:
+- `https://<ドメイン>/<パス>/privacy.html`
+- `https://<ドメイン>/<パス>/terms.html`
 
 ## ローカル開発
 
@@ -82,6 +94,10 @@ CSV は最低でも `channelId` 列が必要です。
 ## 注意 / 安全
 - **登録解除/登録追加は実アカウントに即時反映されます。** 必ず先に Export でバックアップしてください。
 - 登録数が多い場合は quota/rate limit の影響を受けることがあります。アプリは backoff/pacing を行いますが失敗する可能性があり、失敗レポート(JSON)をダウンロードします。
+
+## サポート
+このアプリが役に立ったら、プロジェクトをサポートしてください:
+- `https://buymeacoffee.com/e3pbwto`
 
 ## プロジェクト構成
 - `index.html` — メインページ

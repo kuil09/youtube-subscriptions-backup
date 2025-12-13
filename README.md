@@ -1,5 +1,9 @@
 # YouTube Subscriptions Manager (Static Web)
 
+<p>
+  <img src="public/logo-120.svg" width="120" height="120" alt="YouTube Subscriptions Manager logo" />
+</p>
+
 Read this in: **English** | [한국어](README.ko.md) | [日本語](README.ja.md)
 
 A **static web app** that helps you back up and reorganize your YouTube subscriptions.
@@ -16,6 +20,14 @@ The UI supports **Korean / English / Japanese** and defaults to your browser lan
 - Vite + TypeScript
 - Google OAuth via **Google Identity Services (GIS) Token Client**
 - YouTube Data API v3
+
+## Legal (required for Google OAuth verification)
+- Privacy Policy: `privacy.html`
+- Terms of Service: `terms.html`
+
+When deployed (e.g. GitHub Pages project site), these are typically:
+- `https://<your-domain>/<your-path>/privacy.html`
+- `https://<your-domain>/<your-path>/terms.html`
 
 ## Local development
 
@@ -82,6 +94,10 @@ CSV should include at least a `channelId` column.
 ## Notes / safety
 - **Unsubscribe/Subscribe actions change your real account immediately.** Always export a backup first.
 - Large subscription lists may hit quota/rate limits; the app uses backoff and pacing but failures can still happen.
+
+## Support
+If this app helped you, consider supporting the project:
+- `https://buymeacoffee.com/e3pbwto`
 
 ## Project structure
 - `index.html` — main page

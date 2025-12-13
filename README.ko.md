@@ -1,5 +1,9 @@
 # YouTube 구독 관리자 (정적 웹)
 
+<p>
+  <img src="public/logo-120.svg" width="120" height="120" alt="YouTube 구독 관리자 로고" />
+</p>
+
 다음 작업을 도와주는 **정적 웹 앱**입니다: YouTube 구독 목록을 백업하고(Export) 정리한 뒤, 파일을 다시 Import 해서 브라우저에서 구독을 추가/복구합니다.
 
 읽을 언어: [English](README.md) | **한국어** | [日本語](README.ja.md)
@@ -16,6 +20,14 @@ UI는 **한국어/영어/일본어**를 지원하며, 브라우저 언어를 기
 - Vite + TypeScript
 - Google OAuth: **Google Identity Services (GIS) Token Client**
 - YouTube Data API v3
+
+## 개인정보처리방침/서비스 약관 (Google OAuth 심사용 필수)
+- 개인정보처리방침: `privacy.html`
+- 서비스 약관: `terms.html`
+
+배포 후(예: GitHub Pages 프로젝트 페이지) 보통 아래 URL 형태로 접근됩니다:
+- `https://<도메인>/<경로>/privacy.html`
+- `https://<도메인>/<경로>/terms.html`
 
 ## 로컬 개발
 
@@ -82,6 +94,10 @@ CSV는 최소한 `channelId` 컬럼이 있어야 합니다.
 ## 주의 / 안전장치
 - **구독 취소/추가 동작은 실제 계정에 즉시 반영됩니다.** 반드시 먼저 Export로 백업한 후 진행하세요.
 - 구독 수가 많으면 quota/rate limit에 걸릴 수 있습니다. 앱이 backoff/pacing을 적용하지만 실패가 발생할 수 있으며, 실패 리포트(JSON)를 다운로드합니다.
+
+## 후원
+이 앱이 도움이 되었다면 프로젝트를 후원해 주세요:
+- `https://buymeacoffee.com/e3pbwto`
 
 ## 프로젝트 구조
 - `index.html` — 메인 페이지

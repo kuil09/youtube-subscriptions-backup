@@ -10,6 +10,11 @@ export const I18N: Dict = {
     en: 'YouTube Subscriptions Manager',
     ja: 'YouTube Subscriptions Manager',
   },
+  app_logo_alt: {
+    ko: 'YouTube 구독 관리자 로고',
+    en: 'YouTube Subscriptions Manager logo',
+    ja: 'YouTube Subscriptions Manager のロゴ',
+  },
   app_tag_pill: { ko: '구독 목록', en: 'Subscriptions', ja: 'チャンネル登録' },
   app_intro_1: {
     ko: '{pill}을 백업하고 정리하는 도구입니다. 구독 수를 확인하고, 파일로 내려받아(Export) 보관한 뒤, 필요하면 Import로 다시 구독을 추가할 수 있어요.',
@@ -76,6 +81,15 @@ export const I18N: Dict = {
   },
   btn_apply_import: { ko: '파일 적용해서 구독 추가', en: 'Apply file & subscribe', ja: 'ファイルを適用して登録' },
   import_no_file: { ko: '파일이 로드되지 않았습니다.', en: 'No file loaded.', ja: 'ファイルが読み込まれていません。' },
+
+  support_title: { ko: '후원', en: 'Support', ja: 'サポート' },
+  support_desc: {
+    ko: '이 앱이 도움이 되었다면 프로젝트를 후원해 주세요:',
+    en: 'If this app helped you, consider supporting the project:',
+    ja: '役に立ったらプロジェクトをサポートしてください:',
+  },
+  legal_privacy: { ko: '개인정보처리방침', en: 'Privacy Policy', ja: 'プライバシーポリシー' },
+  legal_terms: { ko: '서비스 약관', en: 'Terms of Service', ja: '利用規約' },
 
   // runtime messages (alerts/confirms/logs)
   msg_initialized: { ko: '초기화 완료.', en: 'Initialized.', ja: '初期化しました。' },
