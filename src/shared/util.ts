@@ -29,14 +29,29 @@ export function toCsv(rows: Record<string, string | number | undefined>[]): stri
   return lines.join('\n');
 }
 
-export function downloadTextFile(filename: string, text: string, mime: string) {
+export function downloadTextFile(
+  filename: string,
+  text: string,
+  mime: string,
+  opts?: { revokeAfterMs?: number }
+) {
   const blob = new Blob([text], { type: mime });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
   a.download = filename;
+  a.rel = 'noopener';
+
+  // Some browsers require the anchor to be in the DOM.
+  a.style.display = 'none';
+  document.body.appendChild(a);
   a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1500);
+  a.remove();
+
+  // There is no reliable “download completed” event for <a download>.
+  // Revoking too early can break large downloads, so use a conservative delay.
+  const revokeAfterMs = opts?.revokeAfterMs ?? 60_000;
+  setTimeout(() => URL.revokeObjectURL(url), revokeAfterMs);
 }
 
 export type CsvParseResult = { rows: Record<string, string>[]; errors: string[] };
