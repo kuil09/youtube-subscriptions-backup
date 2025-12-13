@@ -88,6 +88,11 @@ export const I18N: Dict = {
     en: 'If this app helped you, consider supporting the project:',
     ja: '役に立ったらプロジェクトをサポートしてください:',
   },
+  support_buymeacoffee_aria: {
+    ko: 'Buy Me a Coffee에서 후원하기',
+    en: 'Support on Buy Me a Coffee',
+    ja: 'Buy Me a Coffee でサポート',
+  },
   legal_privacy: { ko: '개인정보처리방침', en: 'Privacy Policy', ja: 'プライバシーポリシー' },
   legal_terms: { ko: '서비스 약관', en: 'Terms of Service', ja: '利用規約' },
 

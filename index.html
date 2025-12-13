@@ -33,6 +33,10 @@
       .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); font-size: 12px; }
       .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
       @media (min-width: 860px) { .grid { grid-template-columns: 1fr 1fr; } }
+      .iconLink { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 12px; border: 1px solid color-mix(in srgb, currentColor 18%, transparent); background: color-mix(in srgb, currentColor 6%, transparent); text-decoration: none; }
+      .iconLink:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
+      .iconLink:focus-visible { outline: 2px solid color-mix(in srgb, currentColor 55%, transparent); outline-offset: 2px; }
+      .bmcIcon { width: 22px; height: 22px; display: block; }
     </style>
   </head>
   <body>
@@ -123,7 +127,31 @@
         <h2 data-i18n="support_title">Support</h2>
         <p class="muted">
           <span data-i18n="support_desc">If this app helped you, consider supporting the project:</span>
-          <a href="https://buymeacoffee.com/e3pbwto" target="_blank" rel="noreferrer">buymeacoffee.com/e3pbwto</a>
+          <a
+            class="iconLink"
+            href="https://buymeacoffee.com/e3pbwto"
+            target="_blank"
+            rel="noreferrer"
+            data-i18n="support_buymeacoffee_aria"
+            data-i18n-attr="aria-label,title"
+            aria-label="Buy me a coffee"
+            title="Buy me a coffee"
+          >
+            <svg class="bmcIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="bmc_bg" x1="4" y1="3" x2="20" y2="21" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FFD74A"/>
+                  <stop offset="1" stop-color="#FFB800"/>
+                </linearGradient>
+              </defs>
+              <circle cx="12" cy="12" r="10" fill="url(#bmc_bg)"/>
+              <path d="M7.3 10.2c0-.7.6-1.3 1.3-1.3h5.3c.7 0 1.3.6 1.3 1.3v3.1c0 1.8-1.5 3.3-3.3 3.3H10.6c-1.8 0-3.3-1.5-3.3-3.3v-3.1z" fill="#111827" fill-opacity="0.9"/>
+              <path d="M15.9 10.4h1c1.1 0 2 .9 2 2s-.9 2-2 2h-1" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-opacity="0.9"/>
+              <path d="M10.2 8.1c0-.6.5-1 1-1h1.6c.6 0 1 .5 1 1" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-opacity="0.9"/>
+              <path d="M12 18.9c2.9 0 4.2-1.6 4.2-1.6" stroke="#111827" stroke-width="1.4" stroke-linecap="round" stroke-opacity="0.45"/>
+              <path d="M10.2 14.4c.8-.8 1.8-.2 1.8.7 0-.9 1-.9 1.7-.2.9.9-.2 2.1-1.7 3-1.6-.8-2.7-2-1.8-3.5z" fill="#EF4444"/>
+            </svg>
+          </a>
         </p>
         <p class="muted">
           <a href="./privacy.html" data-i18n="legal_privacy">Privacy Policy</a>
