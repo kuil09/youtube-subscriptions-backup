@@ -3,10 +3,10 @@ export {};
 declare global {
   // Minimal Google Identity Services typings for Token Client usage.
   // Loaded from: https://accounts.google.com/gsi/client
-  const google: {
-    accounts: {
-      oauth2: {
-        initTokenClient: (cfg: {
+  const google: undefined | {
+    accounts?: {
+      oauth2?: {
+        initTokenClient?: (cfg: {
           client_id: string;
           scope: string;
           callback: (resp: {

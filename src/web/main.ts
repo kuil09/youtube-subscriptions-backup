@@ -1,4 +1,4 @@
-import { getAccessToken, getSavedClientId, setSavedClientId } from './auth';
+import { getAccessToken } from './auth';
 import { listAllSubscriptions, bulkUnsubscribe, subscribeToChannel } from './youtube';
 import type { SubscriptionItem, SubscriptionsExportV1 } from '../shared/types';
 import { downloadTextFile, parseCsv, sleep, toCsv } from '../shared/util';
@@ -34,7 +34,6 @@ function logT(key: string, params?: Record<string, string | number>) {
 
 function setBusy(busy: boolean) {
   const ids = [
-    'saveClientId',
     'authReadonly',
     'authManage',
     'refreshCount',
@@ -345,14 +344,6 @@ function initLanguage() {
 
 function init() {
   initLanguage();
-  const clientIdInput = el<HTMLInputElement>('clientId');
-  clientIdInput.value = getSavedClientId();
-
-  el<HTMLButtonElement>('saveClientId').addEventListener('click', () => {
-    setSavedClientId(clientIdInput.value);
-    logT('msg_saved_client_id');
-    alert(t('alert_saved_client_id'));
-  });
 
   el<HTMLButtonElement>('authReadonly').addEventListener('click', async () => {
     setBusy(true);

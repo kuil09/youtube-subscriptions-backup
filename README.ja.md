@@ -24,6 +24,17 @@ npm install
 npm run dev
 ```
 
+この Web アプリはビルド時の環境変数が必要です:
+
+- `VITE_GOOGLE_OAUTH_CLIENT_ID`
+
+ローカル開発では起動前に設定してください:
+
+```bash
+export VITE_GOOGLE_OAUTH_CLIENT_ID="xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"
+npm run dev
+```
+
 Vite が表示するURLを開いてください。
 
 ビルド:
@@ -50,8 +61,9 @@ npm run preview
 - **Authorized JavaScript origins** にローカル/本番のオリジンを追加します。
   - 例: `http://localhost:5173`, デプロイ先ドメイン
 
-3) **アプリに Client ID を設定**
-- アプリの “Google OAuth Client ID” に Client ID を貼り付けます。
+3) **Client ID を設定**
+- `VITE_GOOGLE_OAUTH_CLIENT_ID` をビルド時の環境変数として設定します。
+- GitHub Pages デプロイの場合、GitHub Actions Secret に `VITE_GOOGLE_OAUTH_CLIENT_ID` を追加すると、ワークフローが `npm run build` 時に注入します。
 
 ## OAuth スコープ
 - 読み取り（参照）の操作:

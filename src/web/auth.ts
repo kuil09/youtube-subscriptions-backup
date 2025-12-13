@@ -1,5 +1,3 @@
-const CLIENT_ID_KEY = 'oauth_client_id';
-
 type TokenRecord = {
   accessToken: string;
   expiry: number; // epoch ms
@@ -9,18 +7,20 @@ type TokenRecord = {
 let cached: TokenRecord | null = null;
 let loadingGis: Promise<void> | null = null;
 
-export function getSavedClientId(): string {
-  return localStorage.getItem(CLIENT_ID_KEY) ?? '';
+export function getConfiguredClientId(): string {
+  // NOTE: This is a client-side app (Vite). The value is injected at build-time.
+  // Even if sourced from GitHub Secrets, the built artifact can still be inspected.
+  // The goal here is to remove UI exposure and avoid end-user editing.
+  const v = import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID;
+  return (typeof v === 'string' ? v : '').trim();
 }
 
-export function setSavedClientId(clientId: string) {
-  localStorage.setItem(CLIENT_ID_KEY, clientId.trim());
-  // client id change invalidates cached token
-  cached = null;
+function getInitTokenClient() {
+  return google?.accounts?.oauth2?.initTokenClient;
 }
 
 export async function ensureGisLoaded(): Promise<void> {
-  if (typeof google !== 'undefined' && google.accounts?.oauth2?.initTokenClient) return;
+  if (getInitTokenClient()) return;
   if (loadingGis) return loadingGis;
 
   loadingGis = new Promise<void>((resolve, reject) => {
@@ -28,7 +28,7 @@ export async function ensureGisLoaded(): Promise<void> {
     if (existing) {
       // If the script already loaded before we attached listeners, the `load`
       // event may never fire again. Use a short poll as a fallback.
-      if (typeof google !== 'undefined' && google.accounts?.oauth2?.initTokenClient) {
+      if (getInitTokenClient()) {
         resolve();
         return;
       }
@@ -42,7 +42,7 @@ export async function ensureGisLoaded(): Promise<void> {
 
       const start = Date.now();
       const timer = setInterval(() => {
-        if (typeof google !== 'undefined' && google.accounts?.oauth2?.initTokenClient) {
+        if (getInitTokenClient()) {
           clearInterval(timer);
           resolve();
           return;
@@ -79,8 +79,10 @@ export async function getAccessToken(opts: {
   scopes: string[];
   prompt?: '' | 'none' | 'consent';
 }): Promise<string> {
-  const clientId = getSavedClientId();
-  if (!clientId) throw new Error('Missing OAuth Client ID. Paste it in "Google OAuth Client ID" first.');
+  const clientId = getConfiguredClientId();
+  if (!clientId) {
+    throw new Error('Missing OAuth Client ID (VITE_GOOGLE_OAUTH_CLIENT_ID). Configure it via build-time environment variables.');
+  }
 
   const now = Date.now();
   if (cached && cached.expiry - 60_000 > now && hasScopes(cached.scopes, opts.scopes)) {
@@ -88,10 +90,12 @@ export async function getAccessToken(opts: {
   }
 
   await ensureGisLoaded();
+  const initTokenClient = getInitTokenClient();
+  if (!initTokenClient) throw new Error('Google Identity Services not available (script not loaded).');
 
   const scope = opts.scopes.join(' ');
   const token = await new Promise<{ access_token: string; expires_in?: number; scope?: string }>((resolve, reject) => {
-    const client = google.accounts.oauth2.initTokenClient({
+    const client = initTokenClient({
       client_id: clientId,
       scope,
       callback: (resp) => {

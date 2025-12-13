@@ -24,6 +24,17 @@ npm install
 npm run dev
 ```
 
+This web app expects a build-time env var:
+
+- `VITE_GOOGLE_OAUTH_CLIENT_ID`
+
+For local development, set it before running Vite:
+
+```bash
+export VITE_GOOGLE_OAUTH_CLIENT_ID="xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"
+npm run dev
+```
+
 Then open the URL printed by Vite.
 
 Build:
@@ -50,8 +61,9 @@ You need your own Google Cloud project and OAuth Client ID.
 - Add your local/dev and production origins to **Authorized JavaScript origins**.
   - Examples: `http://localhost:5173`, your deployed domain.
 
-3) **Use the Client ID in the app**
-- Paste the Client ID into the app’s “Google OAuth Client ID” field.
+3) **Configure the Client ID**
+- Set `VITE_GOOGLE_OAUTH_CLIENT_ID` as a build-time environment variable.
+- For GitHub Pages deploy, add a GitHub Actions secret named `VITE_GOOGLE_OAUTH_CLIENT_ID` (the workflow injects it during `npm run build`).
 
 ## OAuth scopes
 - Read-only operations use:

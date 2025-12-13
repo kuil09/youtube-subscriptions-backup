@@ -25,19 +25,13 @@ export const I18N: Dict = {
 
   lang_label: { ko: '언어', en: 'Language', ja: '言語' },
 
-  sec1_title: { ko: '1) Google OAuth Client ID', en: '1) Google OAuth Client ID', ja: '1) Google OAuth Client ID' },
+  sec1_title: { ko: '1) Google OAuth', en: '1) Google OAuth', ja: '1) Google OAuth' },
   sec1_desc: {
-    ko: 'Google Cloud Console에서 {strong}을 만들고 Client ID를 붙여넣으세요.',
-    en: 'Create an {strong} in Google Cloud Console, then paste the Client ID here.',
-    ja: 'Google Cloud Console で {strong} を作成し、Client ID を貼り付けてください。',
+    ko: 'Client ID는 화면에서 입력하지 않습니다. (배포 환경에서 설정됨) GCP에서 {strong}을 만들고, 빌드 환경변수로 주입한 뒤 아래 버튼으로 권한을 요청하세요.',
+    en: 'Client ID is not entered on this page. (configured at build time) Create an {strong} in GCP, inject it via build-time env, then authorize below.',
+    ja: 'Client ID はこの画面では入力しません(ビルド時に設定)。GCPで {strong} を作成し、ビルド環境変数として注入してから下のボタンで認可してください。',
   },
   sec1_strong: { ko: 'OAuth Client (Web application)', en: 'OAuth Client (Web application)', ja: 'OAuth Client (Web application)' },
-  client_id_placeholder: {
-    ko: 'xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
-    en: 'xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
-    ja: 'xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
-  },
-  btn_save: { ko: '저장', en: 'Save', ja: '保存' },
   btn_auth_readonly: { ko: '권한 요청 (읽기)', en: 'Authorize (readonly)', ja: '認可 (読み取り)' },
   btn_auth_manage: { ko: '권한 요청 (관리)', en: 'Authorize (manage)', ja: '認可 (管理)' },
   sec1_hint: {
@@ -86,8 +80,6 @@ export const I18N: Dict = {
 
   // runtime messages (alerts/confirms/logs)
   msg_initialized: { ko: '초기화 완료.', en: 'Initialized.', ja: '初期化しました。' },
-  msg_saved_client_id: { ko: 'client_id 저장됨.', en: 'Saved client_id.', ja: 'client_id を保存しました。' },
-  alert_saved_client_id: { ko: 'Client ID를 저장했습니다.', en: 'Saved Client ID', ja: 'Client ID を保存しました。' },
   alert_auth_ok_ro: { ko: '인증 성공 (읽기 권한)', en: 'Auth OK (readonly)', ja: '認証OK (読み取り)' },
   alert_auth_ok_manage: { ko: '인증 성공 (관리 권한)', en: 'Auth OK (manage)', ja: '認証OK (管理)' },
   log_authorized_scopes: { ko: '권한 승인: {scopes}', en: 'Authorized scopes: {scopes}', ja: '認可スコープ: {scopes}' },
