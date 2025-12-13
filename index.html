@@ -6,7 +6,7 @@
     <title data-i18n="app_title">YouTube Subscriptions Manager</title>
     <meta
       name="description"
-      content="내 YouTube 구독 채널 수를 확인하고, Export/Import로 구독 목록을 백업·정리·재적용하는 정적 웹 서비스."
+      content="내 YouTube 구독 채널 수를 확인하고, Export/Import로 구독 중인 YouTube 채널 목록을 백업·정리·재적용하는 정적 웹 서비스."
     />
     <style>
       :root { color-scheme: light dark; }
@@ -86,7 +86,7 @@
 
       <section class="card" aria-label="export" style="margin-top: 12px;">
         <h2 data-i18n="sec3_title">3) Export (다운로드)</h2>
-        <p class="muted" data-i18n="sec3_desc">현재 구독 목록을 JSON/CSV 파일로 내려받습니다.</p>
+        <p class="muted" data-i18n="sec3_desc">현재 구독 중인 YouTube 채널 목록을 JSON/CSV 파일로 내려받습니다.</p>
         <div class="row">
           <button id="exportJson" data-i18n="btn_export_json">Export JSON</button>
           <button id="exportCsv" data-i18n="btn_export_csv">Export CSV</button>
@@ -107,7 +107,7 @@
       <section class="card" aria-label="import" style="margin-top: 12px;">
         <h2 data-i18n="sec5_title">5) Import (파일을 적용해서 구독 추가)</h2>
         <p class="muted" data-i18n="sec5_desc">
-          Export한 파일(JSON/CSV)을 수정해서 업로드하면, 현재 구독 목록과 비교 후 부족한 채널을 구독 추가합니다.
+          백업 파일(JSON/CSV)을 업로드하면, 현재 구독 중인 YouTube 채널 목록과 비교해 부족한 채널만 구독 추가합니다.
         </p>
         <div class="row">
           <input id="importFile" type="file" accept=".json,.csv,application/json,text/csv" />

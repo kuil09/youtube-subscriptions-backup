@@ -6,11 +6,11 @@
 
 Read this in: **English** | [한국어](README.ko.md) | [日本語](README.ja.md)
 
-A **static web app** that helps you back up and reorganize your YouTube subscriptions.
+A **static web app** that helps you back up and reorganize your **subscribed YouTube channels**.
 
 Core features:
 - Show **how many channels you’re subscribed to**
-- **Export** your subscriptions to a file (JSON/CSV)
+- **Export** your subscribed channels to a file (JSON/CSV)
 - **Cleanup**: export first, then unsubscribe from all (requires explicit typed confirmation)
 - **Import** an edited export file and subscribe to missing channels from the browser
 

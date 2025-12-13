@@ -4,13 +4,13 @@
   <img src="public/logo-120.svg" width="120" height="120" alt="YouTube 구독 관리자 로고" />
 </p>
 
-다음 작업을 도와주는 **정적 웹 앱**입니다: YouTube 구독 목록을 백업하고(Export) 정리한 뒤, 파일을 다시 Import 해서 브라우저에서 구독을 추가/복구합니다.
+다음 작업을 도와주는 **정적 웹 앱**입니다: **구독 중인 YouTube 채널 목록**을 백업하고(Export) 정리한 뒤, 파일을 다시 Import 해서 브라우저에서 구독을 추가/복구합니다.
 
 읽을 언어: [English](README.md) | **한국어** | [日本語](README.ja.md)
 
 ## 핵심 기능
 - 내가 구독 중인 채널 **갯수 표시**
-- 구독 목록을 파일로 **Export** (JSON/CSV)
+- 구독 중인 YouTube 채널 목록을 파일로 **Export** (JSON/CSV)
 - **Cleanup**: Export 후, typed confirm(직접 입력 확인)까지 거쳐 전체 구독 취소
 - 수정한 Export 파일을 **Import**해서, 현재 구독에 없는 채널만 브라우저에서 구독 추가
 

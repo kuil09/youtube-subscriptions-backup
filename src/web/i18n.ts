@@ -15,7 +15,7 @@ export const I18N: Dict = {
     en: 'YouTube Subscriptions Manager logo',
     ja: 'YouTube Subscriptions Manager のロゴ',
   },
-  app_tag_pill: { ko: '구독 목록', en: 'Subscriptions', ja: 'チャンネル登録' },
+  app_tag_pill: { ko: '구독 중인 YouTube 채널 목록', en: 'Subscribed YouTube channels', ja: '登録チャンネル一覧' },
   app_intro_1: {
     ko: '{pill}을 백업하고 정리하는 도구입니다. 구독 수를 확인하고, 파일로 내려받아(Export) 보관한 뒤, 필요하면 Import로 다시 구독을 추가할 수 있어요.',
     en: 'A simple tool to back up and reorganize your {pill}. Check the count, export a backup file, and import later to subscribe again.',
@@ -32,22 +32,22 @@ export const I18N: Dict = {
 
   sec1_title: { ko: '1) 로그인', en: '1) Sign in', ja: '1) ログイン' },
   sec1_desc: {
-    ko: 'YouTube 구독 목록을 다루려면 Google 로그인이 필요합니다. 아래에서 로그인/권한 허용을 진행하세요.',
-    en: 'To manage your YouTube subscriptions, you need to sign in with Google. Use the buttons below to continue.',
-    ja: 'YouTube の登録を扱うには Google ログインが必要です。下のボタンから認可してください。',
+    ko: '구독 중인 YouTube 채널 목록을 확인/백업/정리하려면 Google 로그인이 필요합니다. 아래에서 로그인/권한 허용을 진행하세요.',
+    en: 'To view/export/organize your subscribed YouTube channels, you need to sign in with Google. Use the buttons below to continue.',
+    ja: '登録中のチャンネル一覧を確認/バックアップ/整理するには Google ログインが必要です。下のボタンから認可してください。',
   },
   btn_auth_readonly: { ko: '로그인 (조회/다운로드)', en: 'Sign in (view/export)', ja: 'ログイン (閲覧/エクスポート)' },
   btn_auth_manage: { ko: '로그인 (구독 변경)', en: 'Sign in (change subscriptions)', ja: 'ログイン (登録を変更)' },
 
   sec2_title: { ko: '2) 구독 수 확인', en: '2) Check your subscription count', ja: '2) 登録数を確認' },
   btn_refresh_count: { ko: '구독 수 확인', en: 'Check count', ja: '件数を確認' },
-  subs_label: { ko: '구독', en: 'Subscriptions', ja: '登録' },
+  subs_label: { ko: '구독 중인 채널', en: 'Subscribed channels', ja: '登録チャンネル' },
 
   sec3_title: { ko: '3) 백업 다운로드', en: '3) Download a backup', ja: '3) バックアップをダウンロード' },
   sec3_desc: {
-    ko: '현재 구독 목록을 파일로 내려받아 보관하세요.',
-    en: 'Download your current subscriptions as a backup file.',
-    ja: '現在の登録リストをバックアップとしてダウンロードします。',
+    ko: '현재 구독 중인 YouTube 채널 목록을 파일로 내려받아 보관하세요.',
+    en: 'Download your current subscribed channels list as a backup file.',
+    ja: '現在の登録チャンネル一覧をバックアップとしてダウンロードします。',
   },
   btn_export_json: { ko: 'JSON 다운로드', en: 'Download JSON', ja: 'JSON をダウンロード' },
   btn_export_csv: { ko: 'CSV 다운로드', en: 'Download CSV', ja: 'CSV をダウンロード' },
@@ -63,9 +63,9 @@ export const I18N: Dict = {
 
   sec5_title: { ko: '5) 파일로 구독 추가', en: '5) Subscribe from a file', ja: '5) ファイルから登録' },
   sec5_desc: {
-    ko: '백업 파일(JSON/CSV)을 업로드하면, 현재 구독에 없는 채널만 골라서 구독을 추가합니다.',
-    en: 'Upload a JSON/CSV backup file to subscribe to channels that are not in your current subscriptions.',
-    ja: 'バックアップ(JSON/CSV)をアップロードすると、現在未登録のチャンネルだけを追加で登録します。',
+    ko: '백업 파일(JSON/CSV)을 업로드하면, 현재 구독 중인 채널 목록에 없는 채널만 골라서 구독을 추가합니다.',
+    en: 'Upload a JSON/CSV backup file to subscribe only to channels that are not in your current subscribed channels list.',
+    ja: 'バックアップ(JSON/CSV)をアップロードすると、現在の登録チャンネル一覧にないチャンネルだけを追加で登録します。',
   },
   btn_apply_import: { ko: '파일 적용해서 구독 추가', en: 'Apply file & subscribe', ja: 'ファイルを適用して登録' },
   import_no_file: { ko: '파일이 로드되지 않았습니다.', en: 'No file loaded.', ja: 'ファイルが読み込まれていません。' },
@@ -86,7 +86,7 @@ export const I18N: Dict = {
   log_authorized_scopes: { ko: '로그인 성공.', en: 'Signed in.', ja: 'ログイン成功。' },
   log_fetched_subs: { ko: '구독 수를 확인했습니다: {count}', en: 'Checked subscription count: {count}', ja: '登録数を確認しました: {count}' },
   log_exported: { ko: '백업을 다운로드했습니다({format}): {count}', en: 'Downloaded backup ({format}): {count}', ja: 'バックアップをダウンロードしました ({format}): {count}' },
-  log_no_subs: { ko: '구독이 없습니다.', en: 'No subscriptions found.', ja: '登録が見つかりません。' },
+  log_no_subs: { ko: '구독 중인 채널이 없습니다.', en: 'No subscribed channels found.', ja: '登録チャンネルが見つかりません。' },
   confirm_cleanup_1: {
     ko: '백업을 다운로드했습니다 (총 {count}).\n\n예시(최대 {n}개): {preview}\n\n정말로 전체 구독을 취소할까요?',
     en: 'Downloaded a backup (total {count}).\n\nPreview (up to {n}): {preview}\n\nDo you want to unsubscribe from all of them?',
