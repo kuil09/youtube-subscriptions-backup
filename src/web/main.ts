@@ -339,8 +339,8 @@ async function applyImport() {
       );
     }
     
-    // Refresh subscription count before showing alert
-    await refreshCount();
+    // Refresh subscription count before showing alert (reuse existing token)
+    await updateSubsCountFromToken(token);
     
     alert(t('alert_import_done', {
       attempted: summary.attempted,
