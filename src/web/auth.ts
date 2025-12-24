@@ -16,9 +16,16 @@ const STATE_STORAGE_KEY = 'oauth_state';
 function generateState(): string {
   const array = new Uint8Array(32); // 256 bits of entropy
   crypto.getRandomValues(array);
+  
   // Convert to base64url (URL-safe base64)
-  // Using Array.from to avoid stack overflow with spread operator on large arrays
-  const base64 = btoa(Array.from(array, byte => String.fromCharCode(byte)).join(''));
+  // Process bytes in a way that handles values > 127 correctly
+  let binary = '';
+  for (let i = 0; i < array.length; i++) {
+    binary += String.fromCharCode(array[i]);
+  }
+  
+  // Convert to base64 and make it URL-safe
+  const base64 = btoa(binary);
   return base64
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
