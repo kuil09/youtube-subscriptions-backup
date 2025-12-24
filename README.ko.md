@@ -71,11 +71,39 @@ npm run preview
 2) **OAuth Client ID 생성**
 - OAuth 클라이언트 유형을 **Web application**으로 생성합니다.
 - 배포/로컬 도메인을 **Authorized JavaScript origins**에 추가합니다.
-  - 예: `http://localhost:5173`, 배포 도메인
+  - 예: `http://localhost:5173`, `https://youtube.kuil09.dev`
+  - ⚠️ **중요**: 앱이 호스팅되는 정확한 도메인을 추가하세요. 경로(예: `/index.html`)는 포함하지 마세요.
+  - ⚠️ **리디렉션 URI는 추가하지 마세요** - Google Identity Services (GIS) Token Client는 JavaScript origins만 필요합니다.
 
 3) **Client ID 설정**
 - `VITE_GOOGLE_OAUTH_CLIENT_ID`를 빌드 시점 환경변수로 설정합니다.
 - GitHub Pages 배포의 경우 GitHub Actions Secret에 `VITE_GOOGLE_OAUTH_CLIENT_ID`를 추가하면, 워크플로우가 `npm run build` 시 주입합니다.
+
+## OAuth 오류 해결
+
+### 오류 400: redirect_uri_mismatch
+
+다음과 같은 오류가 표시되는 경우:
+```
+오류 400: redirect_uri_mismatch
+앱이 Google의 OAuth 2.0 정책을 준수하지 않기 때문에 앱에 로그인할 수 없습니다.
+redirect_uri=storagerelay://https/<your-domain>?id=auth...
+```
+
+**원인**: 앱의 도메인이 Google Cloud Console에 승인된 JavaScript origin으로 등록되지 않았을 때 발생합니다.
+
+**해결 방법**:
+1. [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials로 이동
+2. OAuth 2.0 Client ID를 선택
+3. **Authorized JavaScript origins** 섹션에서 **ADD URI** 클릭
+4. 앱의 전체 origin을 추가 (예: `https://youtube.kuil09.dev`)
+   - 로컬 개발: `http://localhost:5173` (또는 Vite가 사용하는 포트)
+   - 프로덕션: 정확한 배포 URL (경로 제외)
+5. **저장** 클릭
+6. 변경사항이 적용될 때까지 몇 분 대기
+7. 브라우저 캐시를 지우고 다시 로그인 시도
+
+**참고**: Google Identity Services는 내부 리디렉션 URI 형식(`storagerelay://`)을 사용하며, 이는 설정할 수 없고 설정해서도 안 됩니다. **Authorized JavaScript origins**에 도메인만 추가하면 됩니다.
 
 ## OAuth 스코프
 - 조회(읽기) 작업:

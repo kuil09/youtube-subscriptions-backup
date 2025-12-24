@@ -71,11 +71,39 @@ npm run preview
 2) **OAuth Client ID を作成**
 - OAuth クライアント種別は **Web application** で作成します。
 - **Authorized JavaScript origins** にローカル/本番のオリジンを追加します。
-  - 例: `http://localhost:5173`, デプロイ先ドメイン
+  - 例: `http://localhost:5173`, `https://youtube.kuil09.dev`
+  - ⚠️ **重要**: アプリがホストされている正確なドメインを追加してください。パス（例: `/index.html`）は含めないでください。
+  - ⚠️ **リダイレクトURIは追加しないでください** - Google Identity Services (GIS) Token Client は JavaScript origins のみ必要です。
 
 3) **Client ID を設定**
 - `VITE_GOOGLE_OAUTH_CLIENT_ID` をビルド時の環境変数として設定します。
 - GitHub Pages デプロイの場合、GitHub Actions Secret に `VITE_GOOGLE_OAUTH_CLIENT_ID` を追加すると、ワークフローが `npm run build` 時に注入します。
+
+## OAuth エラーのトラブルシューティング
+
+### エラー 400: redirect_uri_mismatch
+
+次のようなエラーが表示される場合:
+```
+오류 400: redirect_uri_mismatch
+앱이 Google의 OAuth 2.0 정책을 준수하지 않기 때문에 앱에 로그인할 수 없습니다.
+redirect_uri=storagerelay://https/<your-domain>?id=auth...
+```
+
+**原因**: アプリのドメインが Google Cloud Console に承認された JavaScript origin として登録されていない場合に発生します。
+
+**解決方法**:
+1. [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials に移動
+2. OAuth 2.0 Client ID を選択
+3. **Authorized JavaScript origins** セクションで **ADD URI** をクリック
+4. アプリの完全な origin を追加 (例: `https://youtube.kuil09.dev`)
+   - ローカル開発: `http://localhost:5173` (または Vite が使用するポート)
+   - 本番: 正確なデプロイ URL (パスを除く)
+5. **保存** をクリック
+6. 変更が反映されるまで数分待機
+7. ブラウザのキャッシュをクリアして再度ログインを試行
+
+**注意**: Google Identity Services は内部リダイレクト URI 形式 (`storagerelay://`) を使用しますが、これは設定できず、設定すべきでもありません。**Authorized JavaScript origins** にドメインを追加するだけで十分です。
 
 ## OAuth スコープ
 - 読み取り（参照）の操作:

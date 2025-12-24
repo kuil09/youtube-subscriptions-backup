@@ -71,11 +71,39 @@ You need your own Google Cloud project and OAuth Client ID.
 2) **Create OAuth Client ID**
 - Create an OAuth client of type **Web application**.
 - Add your local/dev and production origins to **Authorized JavaScript origins**.
-  - Examples: `http://localhost:5173`, your deployed domain.
+  - Examples: `http://localhost:5173`, `https://youtube.kuil09.dev`
+  - ⚠️ **Important**: Add the EXACT domain where your app is hosted. Do NOT include paths (like `/index.html`).
+  - ⚠️ **Do NOT add redirect URIs** - Google Identity Services (GIS) Token Client only requires JavaScript origins.
 
 3) **Configure the Client ID**
 - Set `VITE_GOOGLE_OAUTH_CLIENT_ID` as a build-time environment variable.
 - For GitHub Pages deploy, add a GitHub Actions secret named `VITE_GOOGLE_OAUTH_CLIENT_ID` (the workflow injects it during `npm run build`).
+
+## Troubleshooting OAuth errors
+
+### Error 400: redirect_uri_mismatch
+
+If you see an error like:
+```
+오류 400: redirect_uri_mismatch
+앱이 Google의 OAuth 2.0 정책을 준수하지 않기 때문에 앱에 로그인할 수 없습니다.
+redirect_uri=storagerelay://https/<your-domain>?id=auth...
+```
+
+**Cause**: This error occurs when your app's domain is not registered in Google Cloud Console as an authorized JavaScript origin.
+
+**Solution**:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials
+2. Select your OAuth 2.0 Client ID
+3. Under **Authorized JavaScript origins**, click **ADD URI**
+4. Add your app's full origin (e.g., `https://youtube.kuil09.dev`)
+   - For local development: `http://localhost:5173` (or the port Vite uses)
+   - For production: Your exact deployment URL (without any path)
+5. Click **SAVE**
+6. Wait a few minutes for the changes to propagate
+7. Clear your browser cache and try signing in again
+
+**Note**: Google Identity Services uses an internal redirect URI format (`storagerelay://`) that you cannot and should not configure. You only need to add your domain to **Authorized JavaScript origins**.
 
 ## OAuth scopes
 - Read-only operations use:
