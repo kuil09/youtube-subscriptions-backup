@@ -85,8 +85,8 @@ npm run preview
 
 次のようなエラーが表示される場合:
 ```
-오류 400: redirect_uri_mismatch
-앱이 Google의 OAuth 2.0 정책을 준수하지 않기 때문에 앱에 로그인할 수 없습니다.
+エラー 400: redirect_uri_mismatch
+アプリが Google の OAuth 2.0 ポリシーに準拠していないため、ログインできません。
 redirect_uri=storagerelay://https/<your-domain>?id=auth...
 ```
 
