@@ -339,7 +339,8 @@ async function applyImport() {
       );
     }
     
-    // Refresh subscription count before showing alert (reuse existing token)
+    // Refresh subscription count before showing alert
+    // Use updateSubsCountFromToken directly to avoid race condition with setBusy() state management
     await updateSubsCountFromToken(token);
     
     alert(t('alert_import_done', {
