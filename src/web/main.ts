@@ -40,8 +40,7 @@ function logT(key: string, params?: Record<string, string | number>) {
 
 function setBusy(busy: boolean) {
   const ids = [
-    'authReadonly',
-    'authManage',
+    'authButton',
     'refreshCount',
     'exportJson',
     'exportCsv',
@@ -356,23 +355,12 @@ function initLanguage() {
 function init() {
   initLanguage();
 
-  el<HTMLButtonElement>('authReadonly').addEventListener('click', async () => {
-    setBusy(true);
-    try {
-      const token = await authorize(SCOPES_READONLY, 'consent');
-      await updateSubsCountFromToken(token);
-      alert(t('alert_auth_ok_ro'));
-    } finally {
-      setBusy(false);
-    }
-  });
-
-  el<HTMLButtonElement>('authManage').addEventListener('click', async () => {
+  el<HTMLButtonElement>('authButton').addEventListener('click', async () => {
     setBusy(true);
     try {
       const token = await authorize(SCOPES_MANAGE, 'consent');
       await updateSubsCountFromToken(token);
-      alert(t('alert_auth_ok_manage'));
+      alert(t('alert_auth_ok'));
     } finally {
       setBusy(false);
     }
