@@ -75,6 +75,13 @@ function hideLoadingOverlay() {
   }
 }
 
+function updateLoadingText(key: string) {
+  const textEl = document.querySelector('.loadingText');
+  if (textEl) {
+    textEl.textContent = t(key);
+  }
+}
+
 async function authorize(scopes: string[], prompt: '' | 'none' | 'consent') {
   const token = await getAccessToken({ scopes, prompt });
   logT('log_authorized_scopes', { scopes: scopes.join(' ') });
@@ -177,6 +184,8 @@ async function cleanupSubscriptions(format: 'json' | 'csv') {
     }
 
     // Step 4: unsubscribe (use same token since we already have manage scope)
+    updateLoadingText('loading_unsubscribe');
+    showLoadingOverlay();
     const ids = subs.map(s => s.subscriptionId).filter(Boolean);
     const res = await bulkUnsubscribe(token, ids);
 
@@ -194,6 +203,7 @@ async function cleanupSubscriptions(format: 'json' | 'csv') {
     }
     await refreshCount();
   } finally {
+    hideLoadingOverlay();
     setBusy(false);
   }
 }
@@ -299,6 +309,7 @@ async function applyImport() {
   }
 
   setBusy(true);
+  updateLoadingText('loading_message');
   showLoadingOverlay();
   try {
     const token = await getManageToken(false);
