@@ -6,14 +6,14 @@ type Dict = Record<string, { ko: string; en: string; ja: string }>;
 
 export const I18N: Dict = {
   app_title: {
-    ko: 'YouTube Subscriptions Manager',
-    en: 'YouTube Subscriptions Manager',
-    ja: 'YouTube Subscriptions Manager',
+    ko: 'YT subscription backup',
+    en: 'YT subscription backup',
+    ja: 'YT subscription backup',
   },
   app_logo_alt: {
-    ko: 'YouTube 구독 관리자 로고',
-    en: 'YouTube Subscriptions Manager logo',
-    ja: 'YouTube Subscriptions Manager のロゴ',
+    ko: 'YT subscription backup 로고',
+    en: 'YT subscription backup logo',
+    ja: 'YT subscription backup のロゴ',
   },
   app_tag_pill: { ko: '구독 중인 YouTube 채널 목록', en: 'Subscribed YouTube channels', ja: '登録チャンネル一覧' },
   app_intro_1: {
