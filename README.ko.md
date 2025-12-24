@@ -83,6 +83,13 @@ npm run preview
 - 구독 변경(구독 취소/추가) 작업:
   - `https://www.googleapis.com/auth/youtube`
 
+## OAuth 보안
+이 앱은 OAuth 보안 모범 사례를 구현합니다:
+- **State 파라미터**: 각 OAuth 요청마다 암호학적으로 안전한 랜덤 state 파라미터를 생성하여 CSRF 공격 및 세션 고정 공격을 방지합니다
+- **State 검증**: OAuth 콜백 반환 시 state를 검증하여, 불일치하거나 누락된 state는 거부합니다
+- **세션 저장소**: State 값은 `sessionStorage`(탭 범위)에 저장되며, 검증 후 한 번만 사용됩니다
+- **안전한 난수 생성**: `crypto.getRandomValues()`를 사용하여 256비트 엔트로피로 예측 불가능한 state 값을 생성합니다
+
 ## Import 포맷
 
 ### JSON (권장)
