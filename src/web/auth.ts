@@ -17,7 +17,9 @@ function generateState(): string {
   const array = new Uint8Array(32); // 256 bits of entropy
   crypto.getRandomValues(array);
   // Convert to base64url (URL-safe base64)
-  return btoa(String.fromCharCode(...array))
+  // Using Array.from to avoid stack overflow with spread operator on large arrays
+  const base64 = btoa(Array.from(array, byte => String.fromCharCode(byte)).join(''));
+  return base64
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=/g, '');
@@ -28,7 +30,13 @@ function generateState(): string {
  * Using sessionStorage ensures state is tab-scoped and cleared on tab close.
  */
 function storeState(state: string): void {
-  sessionStorage.setItem(STATE_STORAGE_KEY, state);
+  try {
+    sessionStorage.setItem(STATE_STORAGE_KEY, state);
+  } catch (error) {
+    // sessionStorage may be unavailable in private browsing mode or when storage is full
+    console.error('Failed to store OAuth state in sessionStorage:', error);
+    throw new Error('OAuth state storage failed. Please ensure your browser allows session storage and try again.');
+  }
 }
 
 /**
@@ -36,11 +44,17 @@ function storeState(state: string): void {
  * This ensures one-time use of the state value.
  */
 function consumeState(): string | null {
-  const state = sessionStorage.getItem(STATE_STORAGE_KEY);
-  if (state) {
-    sessionStorage.removeItem(STATE_STORAGE_KEY);
+  try {
+    const state = sessionStorage.getItem(STATE_STORAGE_KEY);
+    if (state) {
+      sessionStorage.removeItem(STATE_STORAGE_KEY);
+    }
+    return state;
+  } catch (error) {
+    // sessionStorage may be unavailable in private browsing mode
+    console.error('Failed to retrieve OAuth state from sessionStorage:', error);
+    return null;
   }
-  return state;
 }
 
 /**
