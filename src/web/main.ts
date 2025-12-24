@@ -61,6 +61,20 @@ function setBusy(busy: boolean) {
   if (file) file.disabled = busy;
 }
 
+function showLoadingOverlay() {
+  const overlay = document.getElementById('loadingOverlay');
+  if (overlay) {
+    overlay.classList.add('active');
+  }
+}
+
+function hideLoadingOverlay() {
+  const overlay = document.getElementById('loadingOverlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+  }
+}
+
 async function authorize(scopes: string[], prompt: '' | 'none' | 'consent') {
   const token = await getAccessToken({ scopes, prompt });
   logT('log_authorized_scopes', { scopes: scopes.join(' ') });
@@ -285,6 +299,7 @@ async function applyImport() {
   }
 
   setBusy(true);
+  showLoadingOverlay();
   try {
     const token = await getManageToken(false);
     const existing = await listAllSubscriptions(token);
@@ -323,14 +338,18 @@ async function applyImport() {
         'application/json'
       );
     }
+    
+    // Refresh subscription count before showing alert
+    await refreshCount();
+    
     alert(t('alert_import_done', {
       attempted: summary.attempted,
       succeeded: summary.succeeded,
       skipped: summary.skippedAlreadySubscribed,
       failed: summary.failed,
     }));
-    await refreshCount();
   } finally {
+    hideLoadingOverlay();
     setBusy(false);
   }
 }

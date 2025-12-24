@@ -69,6 +69,8 @@ export const I18N: Dict = {
   btn_apply_import: { ko: '파일 적용해서 구독 추가', en: 'Apply file & subscribe', ja: 'ファイルを適用して登録' },
   import_no_file: { ko: '파일이 로드되지 않았습니다.', en: 'No file loaded.', ja: 'ファイルが読み込まれていません。' },
 
+  loading_message: { ko: '구독 추가 중... 잠시만 기다려 주세요.', en: 'Adding subscriptions... Please wait.', ja: '登録を追加中... お待ちください。' },
+
   support_title: { ko: '후원', en: 'Support', ja: 'サポート' },
   support_desc: {
     ko: '이 앱이 도움이 되었다면 프로젝트를 후원해 주세요:',
