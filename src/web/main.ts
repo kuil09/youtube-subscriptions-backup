@@ -40,8 +40,7 @@ function logT(key: string, params?: Record<string, string | number>) {
 
 function setBusy(busy: boolean) {
   const ids = [
-    'authReadonly',
-    'authManage',
+    'authButton',
     'refreshCount',
     'exportJson',
     'exportCsv',
@@ -87,7 +86,7 @@ async function updateSubsCountFromToken(token: string) {
 async function refreshCount() {
   setBusy(true);
   try {
-    const token = await getReadonlyToken(true);
+    const token = await getManageToken(false);
     await updateSubsCountFromToken(token);
   } finally {
     setBusy(false);
@@ -120,7 +119,7 @@ function exportCsvFile(subs: SubscriptionItem[]) {
 async function exportSubs(format: 'json' | 'csv') {
   setBusy(true);
   try {
-    const token = await getReadonlyToken(true);
+    const token = await getManageToken(false);
     const subs = await listAllSubscriptions(token);
     if (format === 'json') exportJsonFile(subs);
     else exportCsvFile(subs);
@@ -135,8 +134,8 @@ async function cleanupSubscriptions(format: 'json' | 'csv') {
   setBusy(true);
   try {
     // Step 1: list
-    const roToken = await getReadonlyToken(true);
-    const subs = await listAllSubscriptions(roToken);
+    const token = await getManageToken(false);
+    const subs = await listAllSubscriptions(token);
     if (!subs.length) {
       logT('log_no_subs');
       return;
@@ -163,8 +162,7 @@ async function cleanupSubscriptions(format: 'json' | 'csv') {
       return;
     }
 
-    // Step 4: unsubscribe (manage scope)
-    const token = await getManageToken(true);
+    // Step 4: unsubscribe (use same token since we already have manage scope)
     const ids = subs.map(s => s.subscriptionId).filter(Boolean);
     const res = await bulkUnsubscribe(token, ids);
 
@@ -288,7 +286,7 @@ async function applyImport() {
 
   setBusy(true);
   try {
-    const token = await getManageToken(true);
+    const token = await getManageToken(false);
     const existing = await listAllSubscriptions(token);
     const existingSet = new Set(existing.map(s => s.channelId));
 
@@ -356,23 +354,12 @@ function initLanguage() {
 function init() {
   initLanguage();
 
-  el<HTMLButtonElement>('authReadonly').addEventListener('click', async () => {
-    setBusy(true);
-    try {
-      const token = await authorize(SCOPES_READONLY, 'consent');
-      await updateSubsCountFromToken(token);
-      alert(t('alert_auth_ok_ro'));
-    } finally {
-      setBusy(false);
-    }
-  });
-
-  el<HTMLButtonElement>('authManage').addEventListener('click', async () => {
+  el<HTMLButtonElement>('authButton').addEventListener('click', async () => {
     setBusy(true);
     try {
       const token = await authorize(SCOPES_MANAGE, 'consent');
       await updateSubsCountFromToken(token);
-      alert(t('alert_auth_ok_manage'));
+      alert(t('alert_auth_ok'));
     } finally {
       setBusy(false);
     }

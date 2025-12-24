@@ -32,12 +32,11 @@ export const I18N: Dict = {
 
   sec1_title: { ko: '1) 로그인', en: '1) Sign in', ja: '1) ログイン' },
   sec1_desc: {
-    ko: '구독 중인 YouTube 채널 목록을 확인/백업/정리하려면 Google 로그인이 필요합니다. 아래에서 로그인/권한 허용을 진행하세요.',
-    en: 'To view/export/organize your subscribed YouTube channels, you need to sign in with Google. Use the buttons below to continue.',
+    ko: '구독 중인 YouTube 채널 목록을 확인/백업/정리하려면 Google 로그인이 필요합니다. 아래 버튼으로 로그인/권한 허용을 진행하세요.',
+    en: 'To view/export/organize your subscribed YouTube channels, you need to sign in with Google. Click the button below to continue.',
     ja: '登録中のチャンネル一覧を確認/バックアップ/整理するには Google ログインが必要です。下のボタンから認可してください。',
   },
-  btn_auth_readonly: { ko: '로그인 (조회/다운로드)', en: 'Sign in (view/export)', ja: 'ログイン (閲覧/エクスポート)' },
-  btn_auth_manage: { ko: '로그인 (구독 변경)', en: 'Sign in (change subscriptions)', ja: 'ログイン (登録を変更)' },
+  btn_auth: { ko: 'YouTube 로그인', en: 'Sign in with YouTube', ja: 'YouTube にログイン' },
 
   sec2_title: { ko: '2) 구독 수 확인', en: '2) Check your subscription count', ja: '2) 登録数を確認' },
   btn_refresh_count: { ko: '구독 수 확인', en: 'Check count', ja: '件数を確認' },
@@ -81,8 +80,7 @@ export const I18N: Dict = {
 
   // runtime messages (alerts/confirms/logs)
   msg_initialized: { ko: '초기화 완료.', en: 'Initialized.', ja: '初期化しました。' },
-  alert_auth_ok_ro: { ko: '로그인 완료(조회/다운로드).', en: 'Signed in (view/export).', ja: 'ログイン完了 (閲覧/エクスポート)。' },
-  alert_auth_ok_manage: { ko: '로그인 완료(구독 변경).', en: 'Signed in (change subscriptions).', ja: 'ログイン完了 (登録の変更)。' },
+  alert_auth_ok: { ko: '로그인 완료.', en: 'Signed in successfully.', ja: 'ログイン完了。' },
   log_authorized_scopes: { ko: '로그인 성공.', en: 'Signed in.', ja: 'ログイン成功。' },
   log_fetched_subs: { ko: '구독 수를 확인했습니다: {count}', en: 'Checked subscription count: {count}', ja: '登録数を確認しました: {count}' },
   log_exported: { ko: '백업을 다운로드했습니다({format}): {count}', en: 'Downloaded backup ({format}): {count}', ja: 'バックアップをダウンロードしました ({format}): {count}' },
