@@ -16,7 +16,9 @@ declare global {
             token_type?: string;
             error?: string;
             error_description?: string;
+            state?: string;
           }) => void;
+          state?: string;
         }) => {
           requestAccessToken: (opts?: { prompt?: '' | 'none' | 'consent' }) => void;
         };

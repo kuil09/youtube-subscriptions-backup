@@ -83,6 +83,13 @@ You need your own Google Cloud project and OAuth Client ID.
 - Subscription changes (unsubscribe/subscribe) use:
   - `https://www.googleapis.com/auth/youtube`
 
+## OAuth Security
+This app implements OAuth best practices for security:
+- **State parameter**: A cryptographically random state parameter is generated for each OAuth request to prevent CSRF attacks and session fixation
+- **State validation**: The state is validated when the OAuth callback returns, rejecting mismatched or missing states
+- **Session storage**: State values are stored in `sessionStorage` (tab-scoped) and consumed once after validation
+- **Secure random generation**: Uses `crypto.getRandomValues()` with 256 bits of entropy for unpredictable state values
+
 ## Import format
 
 ### JSON (recommended)

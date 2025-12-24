@@ -83,6 +83,13 @@ npm run preview
 - 登録変更（登録解除/登録追加）の操作:
   - `https://www.googleapis.com/auth/youtube`
 
+## OAuth セキュリティ
+このアプリは OAuth のベストプラクティスを実装しています:
+- **State パラメータ**: 各 OAuth リクエストで暗号学的に安全なランダムな state パラメータを生成し、CSRF 攻撃とセッション固定攻撃を防ぎます
+- **State 検証**: OAuth コールバック時に state を検証し、不一致または欠落した state は拒否します
+- **セッションストレージ**: State 値は `sessionStorage`（タブスコープ）に保存され、検証後に一度だけ使用されます
+- **安全な乱数生成**: `crypto.getRandomValues()` を使用して 256 ビットのエントロピーで予測不可能な state 値を生成します
+
 ## Import フォーマット
 
 ### JSON（推奨）

@@ -7,6 +7,83 @@ type TokenRecord = {
 let cached: TokenRecord | null = null;
 let loadingGis: Promise<void> | null = null;
 
+const STATE_STORAGE_KEY = 'oauth_state';
+
+/**
+ * Generate a cryptographically secure random state parameter for OAuth.
+ * Uses base64url encoding to ensure URL safety.
+ */
+function generateState(): string {
+  const array = new Uint8Array(32); // 256 bits of entropy
+  crypto.getRandomValues(array);
+  
+  // Convert to base64url (URL-safe base64)
+  // Process bytes in a way that handles values > 127 correctly
+  let binary = '';
+  for (let i = 0; i < array.length; i++) {
+    binary += String.fromCharCode(array[i]);
+  }
+  
+  // Convert to base64 and make it URL-safe
+  const base64 = btoa(binary);
+  return base64
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+}
+
+/**
+ * Store the state parameter in sessionStorage for later validation.
+ * Using sessionStorage ensures state is tab-scoped and cleared on tab close.
+ */
+function storeState(state: string): void {
+  try {
+    sessionStorage.setItem(STATE_STORAGE_KEY, state);
+  } catch (error) {
+    // sessionStorage may be unavailable in private browsing mode or when storage is full
+    console.error('Failed to store OAuth state in sessionStorage:', error);
+    throw new Error('OAuth state storage failed. Please ensure your browser allows session storage and try again.');
+  }
+}
+
+/**
+ * Retrieve and remove the stored state parameter.
+ * This ensures one-time use of the state value.
+ */
+function consumeState(): string | null {
+  try {
+    const state = sessionStorage.getItem(STATE_STORAGE_KEY);
+    if (state) {
+      sessionStorage.removeItem(STATE_STORAGE_KEY);
+    }
+    return state;
+  } catch (error) {
+    // sessionStorage may be unavailable in private browsing mode
+    console.error('Failed to retrieve OAuth state from sessionStorage:', error);
+    return null;
+  }
+}
+
+/**
+ * Validate that the received state matches the stored state.
+ * Throws an error if validation fails.
+ */
+function validateState(receivedState: string | undefined): void {
+  const storedState = consumeState();
+  
+  if (!storedState) {
+    throw new Error('OAuth state validation failed: no stored state found. Possible CSRF attack or session expired.');
+  }
+  
+  if (!receivedState) {
+    throw new Error('OAuth state validation failed: no state parameter received from OAuth provider.');
+  }
+  
+  if (storedState !== receivedState) {
+    throw new Error('OAuth state validation failed: state parameter mismatch. Possible CSRF attack.');
+  }
+}
+
 type InitTokenClient = (cfg: {
   client_id: string;
   scope: string;
@@ -17,7 +94,9 @@ type InitTokenClient = (cfg: {
     token_type?: string;
     error?: string;
     error_description?: string;
+    state?: string;
   }) => void;
+  state?: string;
 }) => {
   requestAccessToken: (opts?: { prompt?: '' | 'none' | 'consent' }) => void;
 };
@@ -111,12 +190,25 @@ export async function getAccessToken(opts: {
   const initTokenClient = getInitTokenClient();
   if (!initTokenClient) throw new Error('Google Identity Services not available (script not loaded).');
 
+  // Generate and store state parameter for CSRF protection
+  const state = generateState();
+  storeState(state);
+
   const scope = opts.scopes.join(' ');
   const token = await new Promise<{ access_token: string; expires_in?: number; scope?: string }>((resolve, reject) => {
     const client = initTokenClient({
       client_id: clientId,
       scope,
+      state, // Add state parameter to OAuth request
       callback: (resp) => {
+        // Validate state parameter first
+        try {
+          validateState(resp.state);
+        } catch (error) {
+          reject(error);
+          return;
+        }
+
         if (resp.error) {
           reject(new Error([resp.error, resp.error_description].filter(Boolean).join(': ')));
           return;
