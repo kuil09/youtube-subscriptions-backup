@@ -70,6 +70,7 @@ export const I18N: Dict = {
   import_no_file: { ko: '파일이 로드되지 않았습니다.', en: 'No file loaded.', ja: 'ファイルが読み込まれていません。' },
 
   loading_message: { ko: '구독 추가 중... 잠시만 기다려 주세요.', en: 'Adding subscriptions... Please wait.', ja: '登録を追加中... お待ちください。' },
+  loading_unsubscribe: { ko: '구독 취소 중... 잠시만 기다려 주세요.', en: 'Unsubscribing... Please wait.', ja: '登録を解除中... お待ちください。' },
 
   support_title: { ko: '후원', en: 'Support', ja: 'サポート' },
   support_desc: {
